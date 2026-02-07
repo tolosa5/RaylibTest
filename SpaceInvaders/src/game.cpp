@@ -12,6 +12,8 @@ Game::Game()
             alienLasers.push_back(laser);
         });
     }
+    
+    misteryShipSpawnCooldown = GetRandomValue(10, 20);
 }
 
 Game::~Game()
@@ -22,6 +24,7 @@ Game::~Game()
 void Game::Draw()
 {
     player.Draw();
+    misteryShip.Draw();
     
     for (auto& laser: player.lasers)
     {
@@ -46,6 +49,14 @@ void Game::Draw()
 
 void Game::Update()
 {
+    double currentTime = GetTime();
+    if (currentTime - timeLastSpawn > misteryShipSpawnCooldown)
+    {
+        misteryShip.Spawn();
+        timeLastSpawn = GetTime();
+        misteryShipSpawnCooldown = GetRandomValue(10, 20);
+    }
+
     for (auto& laser: player.lasers)
     {
         laser.Update();
@@ -60,9 +71,11 @@ void Game::Update()
     {
         laser.Update();
     }
+
+    misteryShip.Update();
+
     AliensDirectionChange();
     AliensFireOrder();
-
     DeleteInactiveLasers();
 }
 
@@ -84,6 +97,14 @@ void Game::DeleteInactiveLasers()
     {
         if (!it -> isActive())
             it = player.lasers.erase(it);
+        else
+            ++it;
+    }
+
+    for (auto it = alienLasers.begin(); it != alienLasers.end(); )
+    {
+        if (!it -> isActive())
+            it = alienLasers.erase(it);
         else
             ++it;
     }
@@ -123,8 +144,10 @@ std::vector<Alien> Game::CreateAliens()
                 type = 1;
 
             int cellSize = 55;
-            float x = ((GetScreenWidth() - cellSize * alienCols) / 2) + col * cellSize;
-            float y = ((GetScreenHeight() - cellSize * alienRows) / 4) + row * cellSize;
+            float x = ((GetScreenWidth()
+             - cellSize * alienCols) / 2) + col * cellSize;
+            float y = ((GetScreenHeight()
+             - cellSize * alienRows) / 4) + row * cellSize;
 
             aliens.push_back(Alien({x, y}, type));
         }
@@ -138,9 +161,9 @@ void Game::AliensDirectionChange()
 {
     for (auto& alien: aliens)
     {
-        if (alien.GetPosition().x + alien.alienImages[alien.type - 1].width > 
-        (GetScreenWidth() - 5) || 
-            alien.GetPosition().x < 5)
+        if (Utils::IsOutOfScreenSidewards(
+            alien.GetPosition(), 
+            alien.alienImages[alien.type - 1].width))
         {
             alien.ChangeDirection();
             AliensMoveDown();

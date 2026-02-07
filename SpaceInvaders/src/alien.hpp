@@ -1,16 +1,17 @@
 #pragma once
 #include "raylib.h"
-#include "renderable.hpp"
+#include "hitteable.hpp"
 #include "Event.hpp"
 #include "laser.hpp"
 
-class Alien: public Renderable
+class Alien: public Hitteable
 {
     public:
         Alien(Vector2 position, int type);
 
         void Update();
         void Draw() override;
+        Rectangle GetCollisionBox() override;
         int GetType() { return type; }
         static void UnloadAlienTextures();
         void ChangeDirection();

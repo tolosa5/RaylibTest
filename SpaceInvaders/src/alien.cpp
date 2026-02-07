@@ -25,6 +25,7 @@ Alien::Alien(Vector2 position, int type)
                 break;
         }
     }
+    image = alienImages[type - 1];
 }
 
 void Alien::Update()
@@ -35,6 +36,13 @@ void Alien::Update()
 void Alien::Draw()
 {
     DrawTextureV(alienImages[type - 1], position, WHITE);
+}
+
+Rectangle Alien::GetCollisionBox()
+{
+    return {position.x, position.y, 
+        alienImages[type - 1].width, 
+        alienImages[type - 1].height};
 }
 
 void Alien::UnloadAlienTextures()

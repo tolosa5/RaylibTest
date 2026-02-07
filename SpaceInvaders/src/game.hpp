@@ -1,8 +1,10 @@
 #pragma once
+#include "Event.hpp"
 #include "spaceship.hpp"
 #include "laser.hpp"
 #include "obstacle.hpp"
 #include "alien.hpp"
+#include "misteryShip.hpp"
 
 class Game
 {
@@ -37,4 +39,8 @@ class Game
         std::vector<Laser> alienLasers;
         constexpr static float alienLaserCooldown = 0.3f;
         float lastAlienFireTime = 0.0f;
+
+        MisteryShip misteryShip;
+        float misteryShipSpawnCooldown;
+        float timeLastSpawn;;
 };

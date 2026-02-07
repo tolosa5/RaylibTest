@@ -1,10 +1,10 @@
 #pragma once
 #include "raylib.h"
-#include "renderable.hpp"
+#include "hitteable.hpp"
 #include "laser.hpp"
 #include "vector"
 
-class Spaceship: public Renderable
+class Spaceship: public Hitteable
 {
     public:
         Spaceship();

@@ -23,9 +23,14 @@ void Laser::Update()
     position.y += speed;
     if (active)
     {
-        if (position.y > GetScreenHeight() || position.y < 0)
+        if (Utils::IsOutOfScreenUpwards(position, laserHeight))
         {
             active = false;
         }
     }
+}
+
+Rectangle Laser::GetCollisionBox()
+{
+    return {position.x, position.y, laserWidth, laserHeight};
 }

@@ -3,18 +3,18 @@
 #include "renderable.hpp"
 #include "Utils.hpp"
 
-class Laser
+class Laser: public Renderable
 {
     public:
         Laser(Vector2 startPosition, int speed);
 
         void Update();
-        void Draw();
+        void Draw() override;
+        Rectangle GetCollisionBox() override;
 
         bool isActive() { return active; }
 
     private:
-        Vector2 position;
         int speed = -5;
         int laserWidth = 4;
         int laserHeight = 15;

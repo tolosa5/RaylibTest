@@ -9,6 +9,10 @@ class Renderable
         
         virtual void Draw();
         Vector2 GetPosition() { return position; }
+        virtual Rectangle GetCollisionBox() 
+        {
+            return {position.x, position.y, image.width, image.height}; 
+        }
         
     protected:
         Texture2D image;

@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "Utils.hpp"
 
 class Renderable
 {
@@ -7,6 +8,7 @@ class Renderable
         Renderable();
         
         virtual void Draw();
+        Vector2 GetPosition() { return position; }
         
     protected:
         Texture2D image;

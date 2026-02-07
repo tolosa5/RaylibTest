@@ -4,7 +4,7 @@
 int main() 
 {
     Color greyBg = {30, 30, 30, 255};
-    const int screenWidth = 800;
+    const int screenWidth = 750;
     const int screenHeight = 700;
 
     InitWindow(screenWidth, screenHeight, "Space Invaders Copy");

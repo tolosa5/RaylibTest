@@ -40,5 +40,5 @@ void Laser::OnTriggerEnter(ITriggerListener* other)
 
 Rectangle Laser::GetCollider()
 {
-    return {position.x, position.y, laserWidth, laserHeight};
+    return {position.x, position.y, (float)laserWidth, (float)laserHeight};
 }

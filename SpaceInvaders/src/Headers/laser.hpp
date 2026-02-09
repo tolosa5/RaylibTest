@@ -19,8 +19,8 @@ class Laser: public PhysicObject, ITriggerListener, IHitteable
 
     private:
         int speed = -5;
-        int laserWidth = 4;
-        int laserHeight = 15;
+        float laserWidth = 4;
+        float laserHeight = 15;
         bool active;
         bool isPlayerLaser;
 };

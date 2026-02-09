@@ -40,5 +40,5 @@ public:
     }
 
 private:
-    static inline std::vector<TriggerComponent*> triggers;
+    static std::vector<TriggerComponent*> triggers;
 };

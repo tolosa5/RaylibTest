@@ -16,6 +16,6 @@ public:
     virtual void Update();
     virtual Rectangle GetCollider() { return collider; }
     
-    Rectangle collider = {position.x, position.y, image.width, image.height};
+    Rectangle collider = {position.x, position.y, (float)image.width, (float)image.height};
     bool wasTriggered = false;
 };

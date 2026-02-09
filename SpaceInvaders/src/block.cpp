@@ -12,5 +12,5 @@ void Block::Draw()
 
 Rectangle Block::GetCollider()
 {
-    return {position.x, position.y, size, size};
+    return {position.x, position.y, (float)size, (float)size};
 }

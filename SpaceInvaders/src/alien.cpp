@@ -51,14 +51,14 @@ void Alien::OnHit(PhysicObject* p)
 
 Rectangle Alien::GetCollider()
 {
-    return {position.x, position.y, 
-        alienImages[type - 1].width, 
-        alienImages[type - 1].height};
+    return Rectangle{position.x, position.y, 
+        static_cast<float>(alienImages[type - 1].width), 
+        static_cast<float>(alienImages[type - 1].height)};
 }
 
 void Alien::UnloadAlienTextures()
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 3; i++)
     {
         UnloadTexture(alienImages[i]);
     }

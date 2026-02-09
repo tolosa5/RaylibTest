@@ -1,3 +1,6 @@
+#ifndef EVENT_HPP
+#define EVENT_HPP
+
 #include <string>
 #include <map>
 #include <vector>
@@ -11,7 +14,7 @@ class Event
 public:
     using Callback = function<void(T)>;
 
-    void Subscribe(Callback callback)
+    void Subscribe(const Callback& callback)
     {
         listeners.push_back(callback);
     }
@@ -27,3 +30,5 @@ public:
 private:
     vector<Callback> listeners;
 };
+
+#endif

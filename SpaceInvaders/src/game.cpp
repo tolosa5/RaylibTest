@@ -1,19 +1,19 @@
-#include "game.hpp"
+#include "Headers/game.hpp"
 #include "iostream"
 
 Game::Game()
 {
     obstacles = CreateObstacles();
     aliens = CreateAliens();
-
-    for (auto& alien: aliens)
-    {
-        alien.OnRayShot.Subscribe([this](Laser laser) {
-            alienLasers.push_back(laser);
-        });
-    }
     
     misteryShipSpawnCooldown = GetRandomValue(10, 20);
+    
+    for (auto& alien: aliens)
+    {
+        alien.OnLaserShot.Subscribe(
+            [this](const Laser* laser) {
+                 AliensSaveLasers(*laser); });
+    }
 }
 
 Game::~Game()
@@ -73,6 +73,7 @@ void Game::Update()
     }
 
     misteryShip.Update();
+    triggerSystem.Update();
 
     AliensDirectionChange();
     AliensFireOrder();
@@ -95,7 +96,7 @@ void Game::DeleteInactiveLasers()
 {
     for (auto it = player.lasers.begin(); it != player.lasers.end(); )
     {
-        if (!it -> isActive())
+        if (!it -> IsActive())
             it = player.lasers.erase(it);
         else
             ++it;
@@ -103,7 +104,7 @@ void Game::DeleteInactiveLasers()
 
     for (auto it = alienLasers.begin(); it != alienLasers.end(); )
     {
-        if (!it -> isActive())
+        if (!it -> IsActive())
             it = alienLasers.erase(it);
         else
             ++it;
@@ -192,4 +193,9 @@ void Game::AliensFireOrder()
     firingAlien.AlienShoot();
 
     lastAlienFireTime = GetTime();
+}
+
+void Game::AliensSaveLasers(Laser laser)
+{
+    alienLasers.push_back(laser);
 }

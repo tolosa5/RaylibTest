@@ -1,12 +1,12 @@
 #pragma once
 #include "raylib.h"
-#include "hitteable.hpp"
+#include "physicObject.hpp"
 
-class Block: public Hitteable
+class Block: public PhysicObject
 {
     public:
         Block(Vector2 position);
         void Draw() override;
-        Rectangle GetCollisionBox() override;
+        Rectangle GetCollider() override;
         int size = 3;
 };

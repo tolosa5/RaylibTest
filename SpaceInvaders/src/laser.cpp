@@ -1,12 +1,13 @@
-#include "laser.hpp"
+#include "Headers/laser.hpp"
 #include "iostream"
 
-Laser::Laser(Vector2 startPosition, int speed)
+Laser::Laser(Vector2 startPosition, int speed, bool isPlayerLaser)
 {
     position.x = startPosition.x;
     position.y = startPosition.y;
     this->speed = speed;
     active = true;
+    this->isPlayerLaser = isPlayerLaser;
 }
 
 void Laser::Draw()
@@ -24,13 +25,20 @@ void Laser::Update()
     if (active)
     {
         if (Utils::IsOutOfScreenUpwards(position, laserHeight))
-        {
             active = false;
-        }
     }
 }
 
-Rectangle Laser::GetCollisionBox()
+void Laser::OnTriggerEnter(ITriggerListener* other)
+{
+    if (auto* p = dynamic_cast<IHitteable*>(other))
+    {
+        std::cout << "Laser has hit a hitteable" << std::endl;
+    }
+    
+}
+
+Rectangle Laser::GetCollider()
 {
     return {position.x, position.y, laserWidth, laserHeight};
 }

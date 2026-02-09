@@ -1,4 +1,4 @@
-#include "alien.hpp"
+#include "Headers/alien.hpp"
 #include "iostream"
 
 Texture2D Alien::alienImages[3] = {};
@@ -38,7 +38,18 @@ void Alien::Draw()
     DrawTextureV(alienImages[type - 1], position, WHITE);
 }
 
-Rectangle Alien::GetCollisionBox()
+void Alien::OnHit(PhysicObject* p)
+{
+    if (auto* laser = static_cast<Laser*>(p))
+    {
+        if (!laser->IsPlayerLaser())
+            return;
+
+        std::cout << "Alien hit" << std::endl;
+    }
+}
+
+Rectangle Alien::GetCollider()
 {
     return {position.x, position.y, 
         alienImages[type - 1].width, 
@@ -65,6 +76,9 @@ void Alien::AlienShoot()
         position.x + alienImages[
             type - 1].width / 2, 
         position.y + alienImages[
-            type - 1].height}, 6);
-    OnRayShot.Invoke(laser);
+            type - 1].height}, 6, true);
+
+    Laser* pLaser = &laser;
+
+    OnLaserShot.Invoke(pLaser);
 }

@@ -1,8 +1,10 @@
 #pragma once
 #include "raylib.h"
-#include "hitteable.hpp"
+#include "physicObject.hpp"
+#include "ITriggerListener.hpp"
+#include "IHitteable.hpp"
 
-class MisteryShip: public Hitteable
+class MisteryShip: public PhysicObject, IHitteable, ITriggerListener
 {
     public:
         MisteryShip();
@@ -10,7 +12,7 @@ class MisteryShip: public Hitteable
 
         void Update();
         void Draw() override;
-        Rectangle GetCollisionBox() override;
+        Rectangle GetCollider() override;
         void Spawn();
 
 

@@ -1,4 +1,4 @@
-#include "spaceship.hpp"
+#include "Headers/spaceship.hpp"
 #include "iostream"
 
 Spaceship::Spaceship()
@@ -41,8 +41,20 @@ void Spaceship::Fire()
         std::cout << "Firing laser!" << std::endl;
 
         lasers.push_back(Laser({
-            position.x + image.width / 2 - 2, position.y - 10}, -5));
+            position.x + image.width / 2 - 2, position.y - 10},
+             -5, true));
 
         lastFireTime = GetTime();
+    }
+}
+
+void Spaceship::OnHit(PhysicObject *p)
+{
+    if (auto* laser = static_cast<Laser*>(p))
+    {
+        if (laser->IsPlayerLaser())
+            return;
+
+        std::cout << "Player hit" << std::endl;
     }
 }

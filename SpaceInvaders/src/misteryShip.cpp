@@ -1,4 +1,4 @@
-#include "misteryShip.hpp"
+#include "Headers/misteryShip.hpp"
 
 MisteryShip::MisteryShip()
 {
@@ -28,10 +28,10 @@ void MisteryShip::Draw()
     Renderable::Draw();
 }
 
-Rectangle MisteryShip::GetCollisionBox()
+Rectangle MisteryShip::GetCollider()
 {
     if (alive)
-        Renderable::GetCollisionBox();
+        return collider;
     else
         return {position.x, position.y, 0, 0};
     

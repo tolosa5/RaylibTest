@@ -1,4 +1,4 @@
-#include "block.hpp"
+#include "Headers/block.hpp"
 
 Block::Block(Vector2 position)
 {
@@ -10,7 +10,7 @@ void Block::Draw()
     DrawRectangle(position.x, position.y, 3, 3, Utils::YellowColor());
 }
 
-Rectangle Block::GetCollisionBox()
+Rectangle Block::GetCollider()
 {
     return {position.x, position.y, size, size};
 }

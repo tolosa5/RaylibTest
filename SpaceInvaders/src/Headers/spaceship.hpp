@@ -1,10 +1,9 @@
 #pragma once
 #include "raylib.h"
-#include "hitteable.hpp"
 #include "laser.hpp"
 #include "vector"
 
-class Spaceship: public Hitteable
+class Spaceship: public PhysicObject, IHitteable, ITriggerListener
 {
     public:
         Spaceship();
@@ -14,6 +13,7 @@ class Spaceship: public Hitteable
         void MoveRight();
         void Fire();
         int GetSpeed() { return speed; }
+        void OnHit(PhysicObject* p) override;
 
         void Draw() override;
 

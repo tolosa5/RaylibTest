@@ -1,6 +1,6 @@
 #include "Headers/physicObject.hpp"
 
-PhysicObject::PhysicObject()
+PhysicObject::PhysicObject() 
 {
     
 }

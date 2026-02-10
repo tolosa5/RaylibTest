@@ -8,6 +8,8 @@ Spaceship::Spaceship()
     position.y = GetScreenHeight() - image.height;
     speed = 7;
     lastFireTime = 0.0;
+
+    triggerComponent.Initialize(GetCollider(), this);
 }
 
 Spaceship::~Spaceship()
@@ -48,13 +50,18 @@ void Spaceship::Fire()
     }
 }
 
-void Spaceship::OnHit(PhysicObject *p)
+void Spaceship::OnTriggerEnter(ITriggerListener* other)
 {
-    if (auto* laser = static_cast<Laser*>(p))
+    if (Laser* laser = dynamic_cast<Laser*>(other))
     {
         if (laser->IsPlayerLaser())
             return;
 
-        std::cout << "Player hit" << std::endl;
+        OnLaserHit();
     }
+}
+
+void Spaceship::OnLaserHit()
+{
+    
 }

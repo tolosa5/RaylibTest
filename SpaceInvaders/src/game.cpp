@@ -5,6 +5,7 @@ Game::Game()
 {
     obstacles = CreateObstacles();
     aliens = CreateAliens();
+    InitializeTriggers();
     
     misteryShipSpawnCooldown = GetRandomValue(10, 20);
     
@@ -153,8 +154,6 @@ std::vector<Alien> Game::CreateAliens()
             aliens.push_back(Alien({x, y}, type));
         }
     }
-
-    std::cout << "Created " << aliens.size() << " aliens." << std::endl;
     return aliens;
 }
 
@@ -197,5 +196,26 @@ void Game::AliensFireOrder()
 
 void Game::AliensSaveLasers(Laser laser)
 {
+    TriggerSystem::Register(&laser.triggerComponent);
     alienLasers.push_back(laser);
+}
+
+void Game::InitializeTriggers()
+{
+    TriggerSystem::Register(&player.triggerComponent);
+    TriggerSystem::Register(&misteryShip.triggerComponent);
+
+    for (auto& alien: aliens)
+    {
+        TriggerSystem::Register(&alien.triggerComponent);
+    }
+
+
+    for (auto& obstacle: obstacles)
+    {
+        for (auto& block: obstacle.blocks)
+        {
+            TriggerSystem::Register(&block.triggerComponent);
+        }
+    }
 }

@@ -3,6 +3,8 @@
 Block::Block(Vector2 position)
 {
     this->position = position;
+
+    triggerComponent.Initialize(GetCollider(), this);
 }
 
 void Block::Draw()
@@ -13,4 +15,17 @@ void Block::Draw()
 Rectangle Block::GetCollider()
 {
     return {position.x, position.y, (float)size, (float)size};
+}
+
+void Block::OnTriggerEnter(ITriggerListener* other)
+{
+    if (Laser* laser = dynamic_cast<Laser*>(other))
+    {
+        OnLaserHit();
+    }
+}
+
+void Block::OnLaserHit()
+{
+
 }

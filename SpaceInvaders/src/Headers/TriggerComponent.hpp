@@ -15,8 +15,11 @@ struct TriggerComponent
 
     unordered_set<ITriggerListener*> overlapping;
 
-    TriggerComponent(Rectangle rect, ITriggerListener* l) : listener(l)
+    TriggerComponent() : listener(nullptr) {}
+
+    void Initialize(Rectangle rect, ITriggerListener* l)
     {
         trigger.bounds = rect;
+        listener = l;
     }
 };

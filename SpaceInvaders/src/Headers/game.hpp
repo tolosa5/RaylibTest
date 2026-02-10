@@ -28,6 +28,8 @@ class Game
         void AliensFireOrder();
         void AliensSaveLasers(Laser laser);
 
+        void InitializeTriggers();
+
         Spaceship player;
 
         std::vector<Obstacle> obstacles;

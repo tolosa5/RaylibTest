@@ -8,6 +8,8 @@ Laser::Laser(Vector2 startPosition, int speed, bool isPlayerLaser)
     this->speed = speed;
     active = true;
     this->isPlayerLaser = isPlayerLaser;
+
+    triggerComponent.Initialize(GetCollider(), this);
 }
 
 void Laser::Draw()
@@ -27,15 +29,6 @@ void Laser::Update()
         if (Utils::IsOutOfScreenUpwards(position, laserHeight))
             active = false;
     }
-}
-
-void Laser::OnTriggerEnter(ITriggerListener* other)
-{
-    if (auto* p = dynamic_cast<IHitteable*>(other))
-    {
-        std::cout << "Laser has hit a hitteable" << std::endl;
-    }
-    
 }
 
 Rectangle Laser::GetCollider()

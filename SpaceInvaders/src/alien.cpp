@@ -25,7 +25,10 @@ Alien::Alien(Vector2 position, int type)
                 break;
         }
     }
+    
     image = alienImages[type - 1];
+
+    triggerComponent.Initialize(GetCollider(), this);
 }
 
 void Alien::Update()
@@ -36,17 +39,6 @@ void Alien::Update()
 void Alien::Draw()
 {
     DrawTextureV(alienImages[type - 1], position, WHITE);
-}
-
-void Alien::OnHit(PhysicObject* p)
-{
-    if (auto* laser = static_cast<Laser*>(p))
-    {
-        if (!laser->IsPlayerLaser())
-            return;
-
-        std::cout << "Alien hit" << std::endl;
-    }
 }
 
 Rectangle Alien::GetCollider()
@@ -71,7 +63,6 @@ void Alien::ChangeDirection()
 
 void Alien::AlienShoot()
 {
-    std::cout << "Alien shooting!" << std::endl;
     Laser laser = Laser({
         position.x + alienImages[
             type - 1].width / 2, 
@@ -82,3 +73,21 @@ void Alien::AlienShoot()
 
     OnLaserShot.Invoke(pLaser);
 }
+
+void Alien::OnTriggerEnter(ITriggerListener *other)
+{
+    std::cout << "Hit by laser" << std::endl;
+    if (Laser* laser = dynamic_cast<Laser*>(other))
+    {
+        if (!laser->IsPlayerLaser())
+            return;
+
+        OnLaserHit();
+    }
+}
+
+void Alien::OnLaserHit()
+{
+    
+}
+

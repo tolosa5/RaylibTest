@@ -5,6 +5,8 @@ MisteryShip::MisteryShip()
     image = LoadTexture("Graphics/mystery.png");
     alive = false;
     speed = 3;
+
+    triggerComponent.Initialize(GetCollider(), this);
 }
 
 MisteryShip::~MisteryShip()
@@ -56,4 +58,20 @@ void MisteryShip::Spawn()
         }
         alive = true;
     }
+}
+
+void MisteryShip::OnTriggerEnter(ITriggerListener *other)
+{
+    if (Laser* laser = dynamic_cast<Laser*>(other))
+    {
+        if (!laser->IsPlayerLaser())
+            return;
+
+        OnLaserHit();
+    }
+}
+
+void MisteryShip::OnLaserHit()
+{
+
 }

@@ -3,7 +3,7 @@
 #include "laser.hpp"
 #include "vector"
 
-class Spaceship: public PhysicObject, IHitteable, ITriggerListener
+class Spaceship: public PhysicObject
 {
     public:
         Spaceship();
@@ -12,8 +12,8 @@ class Spaceship: public PhysicObject, IHitteable, ITriggerListener
         void MoveLeft();
         void MoveRight();
         void Fire();
+        void OnHit();
         int GetSpeed() { return speed; }
-        void OnHit(PhysicObject* p) override;
 
         void Draw() override;
 

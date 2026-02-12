@@ -1,4 +1,5 @@
 #include "Headers/misteryShip.hpp"
+#include "misteryShip.hpp"
 
 MisteryShip::MisteryShip()
 {
@@ -26,6 +27,11 @@ void MisteryShip::Update()
 void MisteryShip::Draw()
 {
     Renderable::Draw();
+}
+
+void MisteryShip::OnLaserHit()
+{
+    alive = false;
 }
 
 Rectangle MisteryShip::GetCollider()

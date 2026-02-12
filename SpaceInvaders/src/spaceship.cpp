@@ -1,5 +1,6 @@
 #include "Headers/spaceship.hpp"
 #include "iostream"
+#include "spaceship.hpp"
 
 Spaceship::Spaceship()
 {
@@ -48,13 +49,7 @@ void Spaceship::Fire()
     }
 }
 
-void Spaceship::OnHit(PhysicObject *p)
+void Spaceship::OnHit()
 {
-    if (auto* laser = static_cast<Laser*>(p))
-    {
-        if (laser->IsPlayerLaser())
-            return;
 
-        std::cout << "Player hit" << std::endl;
-    }
 }

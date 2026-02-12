@@ -29,16 +29,12 @@ void Laser::Update()
     }
 }
 
-void Laser::OnTriggerEnter(ITriggerListener* other)
+void Laser::LaserHit()
 {
-    if (auto* p = dynamic_cast<IHitteable*>(other))
-    {
-        std::cout << "Laser has hit a hitteable" << std::endl;
-    }
-    
+    active = false;
 }
 
-Rectangle Laser::GetCollider()
+Rectangle Laser::GetCollider() 
 {
     return {position.x, position.y, laserWidth, laserHeight};
 }

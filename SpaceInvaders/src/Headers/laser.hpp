@@ -1,17 +1,17 @@
 #pragma once
 #include "raylib.h"
 #include "Utils.hpp"
-#include "IHitteable.hpp"
+#include "physicObject.hpp"
 
-class Laser: public PhysicObject, ITriggerListener, IHitteable
+class Laser : public PhysicObject
 {
     public:
         Laser(Vector2 startPosition, int speed, bool isPlayerLaser);
 
         void Update();
         void Draw() override;
-        void OnTriggerEnter(ITriggerListener* other) override;
 
+        void LaserHit();
         Rectangle GetCollider() override;
         bool IsPlayerLaser() { return isPlayerLaser; }
 

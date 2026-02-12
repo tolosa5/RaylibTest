@@ -1,10 +1,8 @@
 #pragma once
 #include "raylib.h"
 #include "physicObject.hpp"
-#include "ITriggerListener.hpp"
-#include "IHitteable.hpp"
 
-class MisteryShip: public PhysicObject, IHitteable, ITriggerListener
+class MisteryShip: public PhysicObject
 {
     public:
         MisteryShip();
@@ -12,6 +10,7 @@ class MisteryShip: public PhysicObject, IHitteable, ITriggerListener
 
         void Update();
         void Draw() override;
+        void OnLaserHit();
         Rectangle GetCollider() override;
         void Spawn();
 

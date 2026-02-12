@@ -38,17 +38,6 @@ void Alien::Draw()
     DrawTextureV(alienImages[type - 1], position, WHITE);
 }
 
-void Alien::OnHit(PhysicObject* p)
-{
-    if (auto* laser = static_cast<Laser*>(p))
-    {
-        if (!laser->IsPlayerLaser())
-            return;
-
-        std::cout << "Alien hit" << std::endl;
-    }
-}
-
 Rectangle Alien::GetCollider()
 {
     return {position.x, position.y, 

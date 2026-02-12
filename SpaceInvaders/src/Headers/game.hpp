@@ -5,7 +5,6 @@
 #include "obstacle.hpp"
 #include "alien.hpp"
 #include "misteryShip.hpp"
-#include "TriggerSystem.hpp"
 
 class Game
 {
@@ -27,6 +26,7 @@ class Game
         void AliensMoveDown();
         void AliensFireOrder();
         void AliensSaveLasers(Laser laser);
+        void CheckForCollisions();
 
         Spaceship player;
 
@@ -44,6 +44,4 @@ class Game
         MisteryShip misteryShip;
         float misteryShipSpawnCooldown;
         float timeLastSpawn;
-
-        TriggerSystem triggerSystem;
 };

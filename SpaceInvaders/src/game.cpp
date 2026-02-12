@@ -73,11 +73,12 @@ void Game::Update()
     }
 
     misteryShip.Update();
-    triggerSystem.Update();
 
     AliensDirectionChange();
     AliensFireOrder();
     DeleteInactiveLasers();
+    CheckForCollisions();
+
 }
 
 void Game::HandleInput()
@@ -185,7 +186,8 @@ void Game::AliensFireOrder()
 {
     double currentTime = GetTime();
 
-    if (currentTime - lastAlienFireTime < alienLaserCooldown || aliens.empty())
+    if (currentTime - lastAlienFireTime < 
+        alienLaserCooldown || aliens.empty())
         return;
 
     int randomAlienIndex = GetRandomValue(0, aliens.size() - 1);
@@ -198,4 +200,91 @@ void Game::AliensFireOrder()
 void Game::AliensSaveLasers(Laser laser)
 {
     alienLasers.push_back(laser);
+}
+
+void Game::CheckForCollisions()
+{
+    for (Laser& laser : player.lasers)
+    {
+        auto it = aliens.begin();
+        while (it != aliens.end())
+        {
+            if (CheckCollisionRecs(it->GetCollider(), 
+            laser.GetCollider()))
+            {
+                it = aliens.erase(it);
+                laser.LaserHit();
+            }
+            else
+                it++;
+        }
+
+        for(Obstacle& obstacle : obstacles)
+        {
+            auto it = obstacle.blocks.begin();
+            while (it != obstacle.blocks.end())
+            {
+                if (CheckCollisionRecs(it->GetCollider(), 
+                laser.GetCollider()))
+                {
+                    it = obstacle.blocks.erase(it);
+                    laser.LaserHit();
+                }
+                else
+                    it++;
+            }  
+        }
+
+        if (CheckCollisionRecs(misteryShip.GetCollider(), 
+            laser.GetCollider()))
+        {
+            misteryShip.OnLaserHit();
+            laser.LaserHit();
+        }
+    }
+
+
+    for (Laser& laser : alienLasers)
+    {
+        if (CheckCollisionRecs(player.GetCollider(), 
+            laser.GetCollider()))
+        {
+            misteryShip.OnLaserHit();
+            laser.LaserHit();
+        }
+
+        for(Obstacle& obstacle : obstacles)
+        {
+            auto it = obstacle.blocks.begin();
+            while (it != obstacle.blocks.end())
+            {
+                if (CheckCollisionRecs(it->GetCollider(), 
+                laser.GetCollider()))
+                {
+                    it = obstacle.blocks.erase(it);
+                    laser.LaserHit();
+                }
+                else
+                    it++;
+            }  
+        }
+    }
+
+    for(auto& alien : aliens)
+    {
+        for(Obstacle& obstacle : obstacles)
+        {
+            auto it = obstacle.blocks.begin();
+            while (it != obstacle.blocks.end())
+            {
+                if (CheckCollisionRecs(it->GetCollider(), alien.GetCollider()))
+                    it = obstacle.blocks.erase(it);
+                else
+                    it++;
+            }  
+        }
+
+        if (CheckCollisionRecs(misteryShip.GetCollider(), alien.GetCollider()))
+            player.OnHit();
+    }
 }

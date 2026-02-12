@@ -1,5 +1,4 @@
 #include "Headers/misteryShip.hpp"
-#include "misteryShip.hpp"
 
 MisteryShip::MisteryShip()
 {

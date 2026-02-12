@@ -14,6 +14,10 @@ Game::Game()
             [this](const Laser* laser) {
                  AliensSaveLasers(*laser); });
     }
+
+    player.OnPlayerDeath.Subscribe(
+        [this](const int* g){
+            GameOver(*g);} );
 }
 
 Game::~Game()
@@ -287,4 +291,9 @@ void Game::CheckForCollisions()
         if (CheckCollisionRecs(misteryShip.GetCollider(), alien.GetCollider()))
             player.OnHit();
     }
+}
+
+void Game::GameOver(int g)
+{
+    
 }

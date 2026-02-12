@@ -27,6 +27,7 @@ class Game
         void AliensFireOrder();
         void AliensSaveLasers(Laser laser);
         void CheckForCollisions();
+        void GameOver(int g);
 
         Spaceship player;
 

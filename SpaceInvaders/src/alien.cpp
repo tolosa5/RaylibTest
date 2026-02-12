@@ -60,7 +60,6 @@ void Alien::ChangeDirection()
 
 void Alien::AlienShoot()
 {
-    std::cout << "Alien shooting!" << std::endl;
     Laser laser = Laser({
         position.x + alienImages[
             type - 1].width / 2, 

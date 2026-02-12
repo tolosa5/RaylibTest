@@ -1,6 +1,5 @@
 #include "Headers/spaceship.hpp"
 #include "iostream"
-#include "spaceship.hpp"
 
 Spaceship::Spaceship()
 {
@@ -9,6 +8,7 @@ Spaceship::Spaceship()
     position.y = GetScreenHeight() - image.height;
     speed = 7;
     lastFireTime = 0.0;
+    currentPlayerLifes = maxPlayerLifes;
 }
 
 Spaceship::~Spaceship()
@@ -39,8 +39,6 @@ void Spaceship::Fire()
 {
     if (GetTime() - lastFireTime >= fireCooldown)
     {
-        std::cout << "Firing laser!" << std::endl;
-
         lasers.push_back(Laser({
             position.x + image.width / 2 - 2, position.y - 10},
              -5, true));
@@ -51,5 +49,16 @@ void Spaceship::Fire()
 
 void Spaceship::OnHit()
 {
+    currentPlayerLifes--;
+    std::cout << "Shoot received" << std::endl;
+    if (currentPlayerLifes >= 0)
+        Death();
+    
+}
 
+void Spaceship::Death()
+{
+    int g = 0;
+    std::cout << "Player death" << std::endl;
+    OnPlayerDeath.Invoke(&g);
 }

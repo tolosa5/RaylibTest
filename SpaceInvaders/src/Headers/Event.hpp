@@ -8,22 +8,22 @@
 
 using namespace std;
 
-template <typename T>
+template <typename... Args>
 class Event
 {
 public:
-    using Callback = function<void(T)>;
+    using Callback = function<void(Args...)>;
 
-    void Subscribe(const Callback& callback)
+    void Subscribe(Callback callback)
     {
         listeners.push_back(callback);
     }
 
-    void Invoke(T arg)
+    void Invoke(Args... arg)
     {
         for (auto& callback : listeners)
         {
-            callback(arg);
+            callback(arg...);
         }
     }
 

@@ -21,6 +21,11 @@ void Spaceship::Draw()
     Renderable::Draw();
 }
 
+Rectangle Spaceship::GetCollider()
+{
+    return {position.x, position.y, (float)image.width, (float)image.height};
+}
+
 void Spaceship::MoveLeft()
 {
     position.x -= speed;
@@ -41,7 +46,7 @@ void Spaceship::Fire()
     {
         lasers.push_back(Laser({
             position.x + image.width / 2 - 2, position.y - 10},
-             -5, true));
+             -5));
 
         lastFireTime = GetTime();
     }
@@ -50,8 +55,10 @@ void Spaceship::Fire()
 void Spaceship::OnHit()
 {
     currentPlayerLifes--;
-    std::cout << "Shoot received" << std::endl;
-    if (currentPlayerLifes >= 0)
+    const int* newPlayerLifes = &currentPlayerLifes;
+    OnPlayerHit.Invoke(newPlayerLifes);
+    std::cout << "Shoot received, lifes left: " << currentPlayerLifes << std::endl;
+    if (currentPlayerLifes <= 0)
         Death();
     
 }

@@ -23,11 +23,6 @@ void MisteryShip::Update()
         alive = false;
 }
 
-void MisteryShip::Draw()
-{
-    Renderable::Draw();
-}
-
 void MisteryShip::OnLaserHit()
 {
     alive = false;

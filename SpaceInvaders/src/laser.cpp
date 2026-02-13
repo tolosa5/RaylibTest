@@ -1,21 +1,21 @@
 #include "Headers/laser.hpp"
 #include "iostream"
 
-Laser::Laser(Vector2 startPosition, int speed, bool isPlayerLaser)
+Laser::Laser(Vector2 startPosition, int speed)
 {
     position.x = startPosition.x;
     position.y = startPosition.y;
     this->speed = speed;
     active = true;
-    this->isPlayerLaser = isPlayerLaser;
 }
 
 void Laser::Draw()
 {
+    DrawRectangle(position.x, position.y, 
+            laserWidth, laserWidth, Utils::YellowColor());
     if (active)
     {
-        DrawRectangle(position.x, position.y, 
-            laserWidth, laserWidth, Utils::YellowColor());
+        
     }
 }
 
@@ -36,5 +36,5 @@ void Laser::LaserHit()
 
 Rectangle Laser::GetCollider() 
 {
-    return {position.x, position.y, laserWidth, laserHeight};
+    return {position.x, position.y, (float)laserWidth, (float)laserHeight};
 }

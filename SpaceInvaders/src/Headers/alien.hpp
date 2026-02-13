@@ -18,7 +18,7 @@ class Alien: public PhysicObject
         void MoveDown(int distance) { position.y += distance; }
         void AlienShoot();
 
-        Event<const Laser*> OnLaserShot;
+        Event<Laser> OnLaserShot;
 
         int type;
         static Texture2D alienImages[3];

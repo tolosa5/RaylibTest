@@ -5,6 +5,7 @@
 #include "obstacle.hpp"
 #include "alien.hpp"
 #include "misteryShip.hpp"
+#include "hudManager.hpp"
 
 class Game
 {
@@ -27,7 +28,7 @@ class Game
         void AliensFireOrder();
         void AliensSaveLasers(Laser laser);
         void CheckForCollisions();
-        void GameOver(int g);
+        void GameOver();
 
         Spaceship player;
 
@@ -39,10 +40,12 @@ class Game
         int alienCols = 11;
         int aliensDirection;
         std::vector<Laser> alienLasers;
-        constexpr static float alienLaserCooldown = 0.3f;
+        constexpr static float alienLaserCooldown = 0.4f;
         float lastAlienFireTime = 0.0f;
 
         MisteryShip misteryShip;
         float misteryShipSpawnCooldown;
         float timeLastSpawn;
+
+        HudManager hudmanager;
 };

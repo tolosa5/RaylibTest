@@ -11,13 +11,14 @@ Game::Game()
     for (auto& alien: aliens)
     {
         alien.OnLaserShot.Subscribe(
-            [this](const Laser* laser) {
-                 AliensSaveLasers(*laser); });
+            [&](Laser laser) {
+                 AliensSaveLasers(laser); });
     }
 
-    player.OnPlayerDeath.Subscribe(
-        [this](const int* g){
-            GameOver(*g);} );
+    
+    player.OnPlayerHit.Subscribe(
+        [&](int lifes){
+            hudmanager.SetLifes(player.GetCurrentLifes()); });
 }
 
 Game::~Game()
@@ -82,7 +83,6 @@ void Game::Update()
     AliensFireOrder();
     DeleteInactiveLasers();
     CheckForCollisions();
-
 }
 
 void Game::HandleInput()
@@ -159,7 +159,6 @@ std::vector<Alien> Game::CreateAliens()
         }
     }
 
-    std::cout << "Created " << aliens.size() << " aliens." << std::endl;
     return aliens;
 }
 
@@ -250,10 +249,9 @@ void Game::CheckForCollisions()
 
     for (Laser& laser : alienLasers)
     {
-        if (CheckCollisionRecs(player.GetCollider(), 
-            laser.GetCollider()))
+        if (CheckCollisionRecs(laser.GetCollider(), player.GetCollider()))
         {
-            misteryShip.OnLaserHit();
+            player.OnHit();
             laser.LaserHit();
         }
 
@@ -288,12 +286,12 @@ void Game::CheckForCollisions()
             }  
         }
 
-        if (CheckCollisionRecs(misteryShip.GetCollider(), alien.GetCollider()))
+        if (CheckCollisionRecs(player.GetCollider(), alien.GetCollider()))
             player.OnHit();
     }
 }
 
-void Game::GameOver(int g)
+void Game::GameOver()
 {
     
 }

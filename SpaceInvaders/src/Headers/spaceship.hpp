@@ -15,10 +15,13 @@ class Spaceship: public PhysicObject
         void OnHit();
         void Death();
         int GetSpeed() { return speed; }
+        Rectangle GetCollider() override;
+        int GetCurrentLifes() { return currentPlayerLifes; }
         void Draw() override;
 
         std::vector<Laser> lasers;
-        Event<const int*> OnPlayerDeath;
+        Event<int> OnPlayerHit;
+        Event<> OnPlayerDeath;
 
     private:
         int speed;

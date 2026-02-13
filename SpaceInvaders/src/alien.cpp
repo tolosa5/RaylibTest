@@ -41,8 +41,8 @@ void Alien::Draw()
 Rectangle Alien::GetCollider()
 {
     return {position.x, position.y, 
-        alienImages[type - 1].width, 
-        alienImages[type - 1].height};
+        (float)alienImages[type - 1].width, 
+        (float)alienImages[type - 1].height};
 }
 
 void Alien::UnloadAlienTextures()
@@ -64,7 +64,7 @@ void Alien::AlienShoot()
         position.x + alienImages[
             type - 1].width / 2, 
         position.y + alienImages[
-            type - 1].height}, 6, true);
+            type - 1].height}, 6);
 
     Laser* pLaser = &laser;
 

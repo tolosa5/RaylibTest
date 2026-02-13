@@ -13,6 +13,6 @@ public:
     virtual void Update();
     virtual Rectangle GetCollider() { return collider; }
     
-    Rectangle collider = {position.x, position.y, image.width, image.height};
-    bool wasTriggered = false;
+    Rectangle collider = {position.x, position.y, 
+        (float)image.width, (float)image.height};
 };

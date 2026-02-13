@@ -6,14 +6,13 @@
 class Laser : public PhysicObject
 {
     public:
-        Laser(Vector2 startPosition, int speed, bool isPlayerLaser);
+        Laser(Vector2 startPosition, int speed);
 
         void Update();
         void Draw() override;
 
         void LaserHit();
         Rectangle GetCollider() override;
-        bool IsPlayerLaser() { return isPlayerLaser; }
 
         bool IsActive() { return active; }
 
@@ -21,6 +20,5 @@ class Laser : public PhysicObject
         int speed = -5;
         int laserWidth = 4;
         int laserHeight = 15;
-        bool active;
-        bool isPlayerLaser;
+        bool active = true;
 };

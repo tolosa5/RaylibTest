@@ -8,6 +8,7 @@ Alien::Alien(Vector2 position, int type)
 {
     this -> position = position;
     this -> type = type;
+    value = type * 100;
 
     if (alienImages[type - 1].id == 0)
     {
@@ -66,7 +67,5 @@ void Alien::AlienShoot()
         position.y + alienImages[
             type - 1].height}, 6);
 
-    Laser* pLaser = &laser;
-
-    OnLaserShot.Invoke(pLaser);
+    OnLaserShot.Invoke(laser);
 }

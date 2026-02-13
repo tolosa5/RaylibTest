@@ -5,7 +5,7 @@ Spaceship::Spaceship()
 {
     image = LoadTexture("Graphics/spaceship.png");
     position.x = (GetScreenWidth() / 2 - image.width) / 2;
-    position.y = GetScreenHeight() - image.height;
+    position.y = GetScreenHeight() - image.height - (Utils::GetOffset() * 2);
     speed = 7;
     lastFireTime = 0.0;
     currentPlayerLifes = maxPlayerLifes;
@@ -29,15 +29,15 @@ Rectangle Spaceship::GetCollider()
 void Spaceship::MoveLeft()
 {
     position.x -= speed;
-    if (position.x < 0)
-        position.x = 0;
+    if (position.x < (Utils::GetOffset() / 2))
+        position.x = (Utils::GetOffset() / 2);
 }
 
 void Spaceship::MoveRight()
 {
     position.x += speed;
-    if (position.x > GetScreenWidth() - image.width)
-        position.x = GetScreenWidth() - image.width;
+    if (position.x > GetScreenWidth() - image.width - (Utils::GetOffset() / 2))
+        position.x = GetScreenWidth() - image.width - (Utils::GetOffset() / 2);
 }
 
 void Spaceship::Fire()
@@ -55,17 +55,23 @@ void Spaceship::Fire()
 void Spaceship::OnHit()
 {
     currentPlayerLifes--;
-    const int* newPlayerLifes = &currentPlayerLifes;
-    OnPlayerHit.Invoke(newPlayerLifes);
+    OnPlayerHit.Invoke(currentPlayerLifes);
     std::cout << "Shoot received, lifes left: " << currentPlayerLifes << std::endl;
+
     if (currentPlayerLifes <= 0)
         Death();
-    
 }
 
 void Spaceship::Death()
 {
-    int g = 0;
     std::cout << "Player death" << std::endl;
-    OnPlayerDeath.Invoke(&g);
+    OnPlayerDeath.Invoke();
+}
+
+void Spaceship::Reset()
+{
+    position.x = (GetScreenWidth() / 2 - image.width) / 2;
+    position.y = GetScreenHeight() - image.height - (Utils::GetOffset() * 2);
+    currentPlayerLifes = maxPlayerLifes;
+    lasers.clear();
 }

@@ -1,28 +1,35 @@
 #include <raylib.h>
 #include "Headers/game.hpp"
+#include "Headers/hudManager.hpp"
 
 int main() 
 {
-    Color greyBg = {30, 30, 30, 255};
     const int screenWidth = 750;
     const int screenHeight = 700;
 
-    InitWindow(screenWidth, screenHeight, "Space Invaders Copy");
+    InitWindow(screenWidth + Utils::GetOffset(), 
+        screenHeight + (2 * Utils::GetOffset()), 
+        "Space Invaders Copy");
+    
     SetTargetFPS(60);
 
     Game game;
+    HudManager hudManager;
 
     while (!WindowShouldClose())
     {
         //Events
-        game.HandleInput();
-
+        if (game.currentGameState == Playing)
+            game.HandleInput();
+        
         //Update positions
         game.Update();
+        hudManager.Update(&game);
 
         //Draw
         BeginDrawing();
-        ClearBackground(greyBg);
+        ClearBackground(Utils::GreyBgColor());
+        
         game.Draw();
 
         EndDrawing();

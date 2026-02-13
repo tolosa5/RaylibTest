@@ -9,15 +9,17 @@ class Spaceship: public PhysicObject
         Spaceship();
         ~Spaceship();
 
+        void Draw() override;
         void MoveLeft();
         void MoveRight();
         void Fire();
         void OnHit();
         void Death();
+        void Reset();
+        
         int GetSpeed() { return speed; }
         Rectangle GetCollider() override;
         int GetCurrentLifes() { return currentPlayerLifes; }
-        void Draw() override;
 
         std::vector<Laser> lasers;
         Event<int> OnPlayerHit;

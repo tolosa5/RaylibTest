@@ -21,6 +21,7 @@ class Alien: public PhysicObject
         Event<Laser> OnLaserShot;
 
         int type;
+        int value;
         static Texture2D alienImages[3];
         static int aliensMoveDirection;
 };

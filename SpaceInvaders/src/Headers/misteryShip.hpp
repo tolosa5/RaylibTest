@@ -9,11 +9,12 @@ class MisteryShip: public PhysicObject
         ~MisteryShip();
 
         void Update();
+        void Draw() override;
         void OnLaserHit();
         Rectangle GetCollider() override;
         void Spawn();
 
-
+        int value = 500;
         bool alive;
 
     private:

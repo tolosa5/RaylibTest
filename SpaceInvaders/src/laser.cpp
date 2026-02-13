@@ -11,11 +11,10 @@ Laser::Laser(Vector2 startPosition, int speed)
 
 void Laser::Draw()
 {
-    DrawRectangle(position.x, position.y, 
-            laserWidth, laserWidth, Utils::YellowColor());
     if (active)
     {
-        
+        DrawRectangle(position.x, position.y, 
+            laserWidth, laserWidth, Utils::YellowColor());
     }
 }
 

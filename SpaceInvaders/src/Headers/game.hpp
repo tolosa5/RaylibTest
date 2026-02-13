@@ -1,3 +1,6 @@
+#ifndef GAME_HPP
+#define GAME_HPP
+
 #pragma once
 #include "Event.hpp"
 #include "spaceship.hpp"
@@ -5,7 +8,15 @@
 #include "obstacle.hpp"
 #include "alien.hpp"
 #include "misteryShip.hpp"
-#include "hudManager.hpp"
+
+class HudManager;
+
+enum GameState
+{
+    MainMenu,
+    Playing,
+    Lost
+};
 
 class Game
 {
@@ -17,7 +28,14 @@ class Game
         void Draw();
         void HandleInput();
 
+        GameState currentGameState = Playing;
+        Spaceship player;
+        int score;
+
     private:
+        void InitGame();
+        void Reset();
+
         void DeleteInactiveLasers();
 
         std::vector<Obstacle> CreateObstacles();
@@ -28,9 +46,9 @@ class Game
         void AliensFireOrder();
         void AliensSaveLasers(Laser laser);
         void CheckForCollisions();
+        void ScoreChecker(int value);
         void GameOver();
 
-        Spaceship player;
 
         std::vector<Obstacle> obstacles;
         int obstacleNumber = 4;
@@ -47,5 +65,7 @@ class Game
         float misteryShipSpawnCooldown;
         float timeLastSpawn;
 
-        HudManager hudmanager;
+        HudManager* hudmanager;
 };
+
+#endif

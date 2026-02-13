@@ -1,23 +1,29 @@
+#ifndef HUDMANAGER_HPP
+#define HUDMANAGER_HPP
+
 #pragma once
 
-#include "subject.hpp"
 #include <iostream>
-#include <algorithm>
+#include "raylib.h"
 
-class HudManager : public Subject
+class Game;
+
+class HudManager
 {
 public:
 
     HudManager();
     ~HudManager();
-    
-    void RegisterObserver(Observer* observer) override;
-    void RemoveObserver(Observer* observer) override;
-    void NotifyObservers() override;
+
+    void Update(Game* game);
 
     void SetLifes(int lifes);
     void SetPoints(int points);
+    std::string FormatWithLeadingZeros(int number, int totalDigits);
 
 private:
-    std::vector<Observer*> observers;
+    Font font = LoadFontEx("Font/monogram.ttf", 64, 0, 0);
+    Texture2D spaceshipImage = LoadTexture("Graphics/spaceship.png");
 };
+
+#endif

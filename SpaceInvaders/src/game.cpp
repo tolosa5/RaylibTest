@@ -1,11 +1,31 @@
 #include "Headers/game.hpp"
+#include "Headers/hudManager.hpp"
 #include "iostream"
 
 Game::Game()
 {
+    hudmanager = new HudManager();
+    InitGame();
+}
+
+Game::~Game()
+{
+    Alien::UnloadAlienTextures();
+    delete hudmanager;
+}
+
+void Game::InitGame()
+{
+    currentGameState = Playing;
+
+    hudmanager->SetPoints(0);
+    hudmanager->SetLifes(player.GetCurrentLifes());
+    
     obstacles = CreateObstacles();
     aliens = CreateAliens();
     
+    timeLastSpawn = 0.0f;
+    score = 0;
     misteryShipSpawnCooldown = GetRandomValue(10, 20);
     
     for (auto& alien: aliens)
@@ -15,15 +35,13 @@ Game::Game()
                  AliensSaveLasers(laser); });
     }
 
-    
     player.OnPlayerHit.Subscribe(
         [&](int lifes){
-            hudmanager.SetLifes(player.GetCurrentLifes()); });
-}
+            hudmanager->SetLifes(player.GetCurrentLifes()); });
 
-Game::~Game()
-{
-    Alien::UnloadAlienTextures();
+    player.OnPlayerDeath.Subscribe(
+        [&]() {
+            GameOver(); });
 }
 
 void Game::Draw()
@@ -54,35 +72,63 @@ void Game::Draw()
 
 void Game::Update()
 {
-    double currentTime = GetTime();
-    if (currentTime - timeLastSpawn > misteryShipSpawnCooldown)
+    switch (currentGameState)
     {
-        misteryShip.Spawn();
-        timeLastSpawn = GetTime();
-        misteryShipSpawnCooldown = GetRandomValue(10, 20);
+        case MainMenu:
+            break;
+        case Playing:
+        {
+            double currentTime = GetTime();
+            if (currentTime - timeLastSpawn > misteryShipSpawnCooldown)
+            {
+                misteryShip.Spawn();
+                timeLastSpawn = GetTime();
+                misteryShipSpawnCooldown = GetRandomValue(10, 20);
+            }
+
+            for (auto& laser: player.lasers)
+            {
+                laser.Update();
+            }
+
+            for (auto& alien: aliens)
+            {
+                alien.Update();
+            }
+
+            for (auto& laser: alienLasers)
+            {
+                laser.Update();
+            }
+
+            misteryShip.Update();
+
+            AliensDirectionChange();
+            AliensFireOrder();
+            DeleteInactiveLasers();
+            CheckForCollisions();
+            break;
+        }
+
+        case Lost:
+        {
+            if (IsKeyDown(KEY_ENTER))
+                Reset();
+        }    
+            break;
+        default:
+            break;
     }
+}
 
-    for (auto& laser: player.lasers)
-    {
-        laser.Update();
-    }
+void Game::Reset()
+{
+    player.Reset();
+    aliens.clear();
+    alienLasers.clear();
+    obstacles.clear();
 
-    for (auto& alien: aliens)
-    {
-        alien.Update();
-    }
-
-    for (auto& laser: alienLasers)
-    {
-        laser.Update();
-    }
-
-    misteryShip.Update();
-
-    AliensDirectionChange();
-    AliensFireOrder();
-    DeleteInactiveLasers();
-    CheckForCollisions();
+    InitGame();
 }
 
 void Game::HandleInput()
@@ -122,7 +168,7 @@ std::vector<Obstacle> Game::CreateObstacles()
     float gap = (GetScreenWidth() - (obstacleNumber * obstacleWidth)) /
         (obstacleNumber + 1);
 
-    float offsetY = GetScreenHeight() - 100;
+    float offsetY = GetScreenHeight() - (100 + Utils::GetOffset() * 2);
     for(int i = 0; i < obstacleNumber; i++)
     {
         float offsetX = (i + 1) * gap + (i * obstacleWidth);
@@ -217,6 +263,7 @@ void Game::CheckForCollisions()
             {
                 it = aliens.erase(it);
                 laser.LaserHit();
+                ScoreChecker(it->value);
             }
             else
                 it++;
@@ -243,6 +290,7 @@ void Game::CheckForCollisions()
         {
             misteryShip.OnLaserHit();
             laser.LaserHit();
+            ScoreChecker(misteryShip.value);
         }
     }
 
@@ -261,7 +309,7 @@ void Game::CheckForCollisions()
             while (it != obstacle.blocks.end())
             {
                 if (CheckCollisionRecs(it->GetCollider(), 
-                laser.GetCollider()))
+                    laser.GetCollider()))
                 {
                     it = obstacle.blocks.erase(it);
                     laser.LaserHit();
@@ -291,7 +339,14 @@ void Game::CheckForCollisions()
     }
 }
 
+void Game::ScoreChecker(int value)
+{
+    score += value;
+    hudmanager->SetPoints(score);
+}
+
 void Game::GameOver()
 {
-    
+    currentGameState = Lost;
+    std::cout << "Game Over!" << std::endl;
 }

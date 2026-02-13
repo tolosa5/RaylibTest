@@ -23,6 +23,12 @@ void MisteryShip::Update()
         alive = false;
 }
 
+void MisteryShip::Draw()
+{
+    if (alive)
+        Renderable::Draw();
+}
+
 void MisteryShip::OnLaserHit()
 {
     alive = false;
@@ -46,12 +52,12 @@ void MisteryShip::Spawn()
 
         if (side == 0)
         {
-            position.x = 0;
+            position.x = Utils::GetOffset() / 2;
             speed = 3;
         }
         else
         {
-            position.x = GetScreenWidth() - image.width;
+            position.x = GetScreenWidth() - image.width - (Utils::GetOffset() / 2);
             speed = -3;
         }
         alive = true;

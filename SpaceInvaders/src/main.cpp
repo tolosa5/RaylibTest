@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include "Headers/game.hpp"
 #include "Headers/hudManager.hpp"
+#include "Headers/soundManager.hpp"
 
 int main() 
 {

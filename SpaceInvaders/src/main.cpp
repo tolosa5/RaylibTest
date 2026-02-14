@@ -12,19 +12,20 @@ int main()
         "Space Invaders Copy");
     
     SetTargetFPS(60);
+    InitAudioDevice();
 
     Game game;
     HudManager hudManager;
+    AudioManager audioManager;
 
     while (!WindowShouldClose())
     {
         //Events
-        if (game.currentGameState == Playing)
-            game.HandleInput();
+        game.HandleInput();
         
         //Update positions
         game.Update();
-        hudManager.Update(&game);
+        audioManager.Update();
 
         //Draw
         BeginDrawing();
@@ -36,4 +37,5 @@ int main()
     }
 
     CloseWindow();
+    CloseAudioDevice();
 }

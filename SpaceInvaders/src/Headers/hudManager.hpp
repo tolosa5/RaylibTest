@@ -18,7 +18,8 @@ public:
     void Update(Game* game);
 
     void SetLifes(int lifes);
-    void SetPoints(int points);
+    void SetScore(int score);
+    void SetHighScore(int highscore);
     std::string FormatWithLeadingZeros(int number, int totalDigits);
 
 private:

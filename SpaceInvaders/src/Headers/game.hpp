@@ -10,6 +10,7 @@
 #include "misteryShip.hpp"
 
 class HudManager;
+class AudioManager;
 
 enum GameState
 {
@@ -31,6 +32,7 @@ class Game
         GameState currentGameState = Playing;
         Spaceship player;
         int score;
+        int highscore;
 
     private:
         void InitGame();
@@ -45,9 +47,13 @@ class Game
         void AliensMoveDown();
         void AliensFireOrder();
         void AliensSaveLasers(Laser laser);
+
         void CheckForCollisions();
-        void ScoreChecker(int value);
         void GameOver();
+
+        void ScoreChecker(int value);
+        void SaveHighScore(int highscore);
+        int LoadHighScore();
 
 
         std::vector<Obstacle> obstacles;
@@ -66,6 +72,7 @@ class Game
         float timeLastSpawn;
 
         HudManager* hudmanager;
+        AudioManager* audioManager;
 };
 
 #endif

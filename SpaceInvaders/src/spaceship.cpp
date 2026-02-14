@@ -55,7 +55,6 @@ void Spaceship::Fire()
 void Spaceship::OnHit()
 {
     currentPlayerLifes--;
-    OnPlayerHit.Invoke(currentPlayerLifes);
     std::cout << "Shoot received, lifes left: " << currentPlayerLifes << std::endl;
 
     if (currentPlayerLifes <= 0)

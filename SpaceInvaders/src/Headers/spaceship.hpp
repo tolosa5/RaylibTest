@@ -22,7 +22,7 @@ class Spaceship: public PhysicObject
         int GetCurrentLifes() { return currentPlayerLifes; }
 
         std::vector<Laser> lasers;
-        Event<int> OnPlayerHit;
+        Event<> OnLaserShot;
         Event<> OnPlayerDeath;
 
     private:

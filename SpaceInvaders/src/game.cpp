@@ -1,10 +1,14 @@
 #include "Headers/game.hpp"
 #include "Headers/hudManager.hpp"
+#include "Headers/soundManager.hpp"
+
 #include "iostream"
+#include <fstream>
 
 Game::Game()
 {
     hudmanager = new HudManager();
+    audioManager = new AudioManager();
     InitGame();
 }
 
@@ -12,20 +16,24 @@ Game::~Game()
 {
     Alien::UnloadAlienTextures();
     delete hudmanager;
+    audioManager->CloseAudio();
+    delete audioManager;
 }
 
 void Game::InitGame()
 {
     currentGameState = Playing;
+    audioManager->InitAudio();
 
-    hudmanager->SetPoints(0);
-    hudmanager->SetLifes(player.GetCurrentLifes());
+    score = 0;
+    highscore = LoadHighScore();
+    hudmanager->SetScore(score);
+    hudmanager->SetHighScore(highscore);
     
     obstacles = CreateObstacles();
     aliens = CreateAliens();
     
     timeLastSpawn = 0.0f;
-    score = 0;
     misteryShipSpawnCooldown = GetRandomValue(10, 20);
     
     for (auto& alien: aliens)
@@ -35,9 +43,9 @@ void Game::InitGame()
                  AliensSaveLasers(laser); });
     }
 
-    player.OnPlayerHit.Subscribe(
-        [&](int lifes){
-            hudmanager->SetLifes(player.GetCurrentLifes()); });
+    player.OnLaserShot.Subscribe(
+        [&]() {
+            audioManager->PlayLaserSound(); });
 
     player.OnPlayerDeath.Subscribe(
         [&]() {
@@ -72,6 +80,9 @@ void Game::Draw()
 
 void Game::Update()
 {
+    audioManager->Update();
+    hudmanager->Update(this);
+
     switch (currentGameState)
     {
         case MainMenu:
@@ -107,6 +118,7 @@ void Game::Update()
             AliensFireOrder();
             DeleteInactiveLasers();
             CheckForCollisions();
+            
             break;
         }
 
@@ -114,8 +126,9 @@ void Game::Update()
         {
             if (IsKeyDown(KEY_ENTER))
                 Reset();
-        }    
+
             break;
+        }    
         default:
             break;
     }
@@ -133,6 +146,9 @@ void Game::Reset()
 
 void Game::HandleInput()
 {
+    if (currentGameState != Playing)
+        return;
+
     if (IsKeyDown(KEY_LEFT))
         player.MoveLeft();
 
@@ -242,6 +258,7 @@ void Game::AliensFireOrder()
     int randomAlienIndex = GetRandomValue(0, aliens.size() - 1);
     Alien& firingAlien = aliens[randomAlienIndex];
     firingAlien.AlienShoot();
+    audioManager->PlayLaserSound();
 
     lastAlienFireTime = GetTime();
 }
@@ -264,6 +281,7 @@ void Game::CheckForCollisions()
                 it = aliens.erase(it);
                 laser.LaserHit();
                 ScoreChecker(it->value);
+                audioManager->PlayExplosionSound();
             }
             else
                 it++;
@@ -291,6 +309,7 @@ void Game::CheckForCollisions()
             misteryShip.OnLaserHit();
             laser.LaserHit();
             ScoreChecker(misteryShip.value);
+            audioManager->PlayExplosionSound();
         }
     }
 
@@ -301,6 +320,7 @@ void Game::CheckForCollisions()
         {
             player.OnHit();
             laser.LaserHit();
+            audioManager->PlayExplosionSound();
         }
 
         for(Obstacle& obstacle : obstacles)
@@ -342,11 +362,37 @@ void Game::CheckForCollisions()
 void Game::ScoreChecker(int value)
 {
     score += value;
-    hudmanager->SetPoints(score);
+    if (score > highscore)
+    {
+        highscore = score;
+        SaveHighScore(highscore);
+    }
 }
 
 void Game::GameOver()
 {
     currentGameState = Lost;
     std::cout << "Game Over!" << std::endl;
+}
+
+void Game::SaveHighScore(int highscore)
+{
+    std::ofstream file("highscore.txt");
+    if (file.is_open())
+    {
+        file << highscore;
+        file.close();
+    }
+}
+
+int Game::LoadHighScore()
+{
+    int loadedHighScore = 0;
+    std::ifstream file("highscore.txt");
+    if (file.is_open())
+    {
+        file >> loadedHighScore;
+        file.close();
+    }
+    return loadedHighScore;
 }

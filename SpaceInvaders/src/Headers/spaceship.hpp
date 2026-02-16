@@ -10,8 +10,8 @@ class Spaceship: public PhysicObject
         ~Spaceship();
 
         void Draw() override;
-        void MoveLeft();
-        void MoveRight();
+        void MoveLeft(float dt);
+        void MoveRight(float dt);
         void Fire();
         void OnHit();
         void Death();

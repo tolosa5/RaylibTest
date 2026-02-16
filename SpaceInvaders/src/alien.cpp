@@ -29,9 +29,9 @@ Alien::Alien(Vector2 position, int type)
     image = alienImages[type - 1];
 }
 
-void Alien::Update()
+void Alien::Update(float dt)
 {
-    position.x += aliensMoveDirection;
+    position.x += aliensMoveDirection * (80 * dt);
 }
 
 void Alien::Draw()
@@ -65,7 +65,7 @@ void Alien::AlienShoot()
         position.x + alienImages[
             type - 1].width / 2, 
         position.y + alienImages[
-            type - 1].height}, 6);
+            type - 1].height}, 200);
 
     OnLaserShot.Invoke(laser);
 }

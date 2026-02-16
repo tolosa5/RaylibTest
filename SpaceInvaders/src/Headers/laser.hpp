@@ -8,7 +8,7 @@ class Laser : public PhysicObject
     public:
         Laser(Vector2 startPosition, int speed);
 
-        void Update();
+        void Update(float dt) override;
         void Draw() override;
 
         void LaserHit();
@@ -17,7 +17,7 @@ class Laser : public PhysicObject
         bool IsActive() { return active; }
 
     private:
-        int speed = -5;
+        int speed = -200;
         int laserWidth = 4;
         int laserHeight = 15;
         bool active = true;

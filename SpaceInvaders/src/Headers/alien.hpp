@@ -9,7 +9,7 @@ class Alien: public PhysicObject
     public:
         Alien(Vector2 position, int type);
 
-        void Update();
+        void Update(float dt);
         void Draw() override;
         Rectangle GetCollider() override;
         int GetType() { return type; }

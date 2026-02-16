@@ -3,6 +3,8 @@
 
 HudManager::HudManager()
 {
+    font = LoadFontEx("Font/monogram.ttf", 64, 0, 0);
+    spaceshipImage = LoadTexture("Graphics/spaceship.png");
     SetLifes(3);
     SetScore(0);
 }

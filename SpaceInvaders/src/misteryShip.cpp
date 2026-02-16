@@ -4,7 +4,7 @@ MisteryShip::MisteryShip()
 {
     image = LoadTexture("Graphics/mystery.png");
     alive = false;
-    speed = 3;
+    speed = 160;
 }
 
 MisteryShip::~MisteryShip()
@@ -12,12 +12,12 @@ MisteryShip::~MisteryShip()
     UnloadTexture(image);
 }
 
-void MisteryShip::Update()
+void MisteryShip::Update(float dt)
 {
     if (!alive)
         return;
     
-    position.x += speed;
+    position.x += speed * dt;
 
     if (Utils::IsOutOfScreenSidewards(position, image.width))
         alive = false;
@@ -53,12 +53,12 @@ void MisteryShip::Spawn()
         if (side == 0)
         {
             position.x = Utils::GetOffset() / 2;
-            speed = 3;
+            speed = 160;
         }
         else
         {
             position.x = GetScreenWidth() - image.width - (Utils::GetOffset() / 2);
-            speed = -3;
+            speed = -160;
         }
         alive = true;
     }

@@ -16,17 +16,16 @@ int main()
     InitAudioDevice();
 
     Game game;
-    HudManager hudManager;
-    AudioManager audioManager;
 
     while (!WindowShouldClose())
     {
+        float dt = GetFrameTime();
+
         //Events
-        game.HandleInput();
+        game.HandleInput(dt);
         
         //Update positions
-        game.Update();
-        audioManager.Update();
+        game.Update(dt);
 
         //Draw
         BeginDrawing();

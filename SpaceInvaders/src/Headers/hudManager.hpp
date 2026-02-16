@@ -23,8 +23,8 @@ public:
     std::string FormatWithLeadingZeros(int number, int totalDigits);
 
 private:
-    Font font = LoadFontEx("Font/monogram.ttf", 64, 0, 0);
-    Texture2D spaceshipImage = LoadTexture("Graphics/spaceship.png");
+    Font font;
+    Texture2D spaceshipImage;
 };
 
 #endif

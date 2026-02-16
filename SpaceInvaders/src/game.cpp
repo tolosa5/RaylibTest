@@ -78,7 +78,7 @@ void Game::Draw()
     }
 }
 
-void Game::Update()
+void Game::Update(float dt)
 {
     audioManager->Update();
     hudmanager->Update(this);
@@ -99,20 +99,20 @@ void Game::Update()
 
             for (auto& laser: player.lasers)
             {
-                laser.Update();
+                laser.Update(dt);
             }
 
             for (auto& alien: aliens)
             {
-                alien.Update();
+                alien.Update(dt);
             }
 
             for (auto& laser: alienLasers)
             {
-                laser.Update();
+                laser.Update(dt);
             }
 
-            misteryShip.Update();
+            misteryShip.Update(dt);
 
             AliensDirectionChange();
             AliensFireOrder();
@@ -144,16 +144,16 @@ void Game::Reset()
     InitGame();
 }
 
-void Game::HandleInput()
+void Game::HandleInput(float dt)
 {
     if (currentGameState != Playing)
         return;
 
     if (IsKeyDown(KEY_LEFT))
-        player.MoveLeft();
+        player.MoveLeft(dt);
 
     else if (IsKeyDown(KEY_RIGHT))
-        player.MoveRight();
+        player.MoveRight(dt);
 
     if (IsKeyDown(KEY_SPACE))
         player.Fire();
@@ -278,9 +278,10 @@ void Game::CheckForCollisions()
             if (CheckCollisionRecs(it->GetCollider(), 
             laser.GetCollider()))
             {
+                int alienValue = it->value;
                 it = aliens.erase(it);
                 laser.LaserHit();
-                ScoreChecker(it->value);
+                ScoreChecker(alienValue);
                 audioManager->PlayExplosionSound();
             }
             else

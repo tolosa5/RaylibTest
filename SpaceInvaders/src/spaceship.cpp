@@ -6,7 +6,7 @@ Spaceship::Spaceship()
     image = LoadTexture("Graphics/spaceship.png");
     position.x = (GetScreenWidth() / 2 - image.width) / 2;
     position.y = GetScreenHeight() - image.height - (Utils::GetOffset() * 2);
-    speed = 7;
+    speed = 200;
     lastFireTime = 0.0;
     currentPlayerLifes = maxPlayerLifes;
 }
@@ -26,16 +26,16 @@ Rectangle Spaceship::GetCollider()
     return {position.x, position.y, (float)image.width, (float)image.height};
 }
 
-void Spaceship::MoveLeft()
+void Spaceship::MoveLeft(float dt)
 {
-    position.x -= speed;
+    position.x -= speed * dt;
     if (position.x < (Utils::GetOffset() / 2))
         position.x = (Utils::GetOffset() / 2);
 }
 
-void Spaceship::MoveRight()
+void Spaceship::MoveRight(float dt)
 {
-    position.x += speed;
+    position.x += speed * dt;
     if (position.x > GetScreenWidth() - image.width - (Utils::GetOffset() / 2))
         position.x = GetScreenWidth() - image.width - (Utils::GetOffset() / 2);
 }
@@ -46,7 +46,7 @@ void Spaceship::Fire()
     {
         lasers.push_back(Laser({
             position.x + image.width / 2 - 2, position.y - 10},
-             -5));
+             -200));
 
         lastFireTime = GetTime();
     }

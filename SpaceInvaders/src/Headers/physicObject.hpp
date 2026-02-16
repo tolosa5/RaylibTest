@@ -10,7 +10,7 @@ public:
 
     PhysicObject();
 
-    virtual void Update();
+    virtual void Update(float dt);
     virtual Rectangle GetCollider() { return collider; }
     
     Rectangle collider = {position.x, position.y, 

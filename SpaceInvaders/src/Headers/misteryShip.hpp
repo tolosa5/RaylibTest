@@ -8,7 +8,7 @@ class MisteryShip: public PhysicObject
         MisteryShip();
         ~MisteryShip();
 
-        void Update();
+        void Update(float dt) override;
         void Draw() override;
         void OnLaserHit();
         Rectangle GetCollider() override;

@@ -25,9 +25,9 @@ class Game
         Game();
         ~Game();
 
-        void Update();
+        void Update(float dt);
         void Draw();
-        void HandleInput();
+        void HandleInput(float dt);
 
         GameState currentGameState = Playing;
         Spaceship player;

@@ -14,13 +14,13 @@ void Laser::Draw()
     if (active)
     {
         DrawRectangle(position.x, position.y, 
-            laserWidth, laserWidth, Utils::YellowColor());
+            laserWidth, laserHeight, Utils::YellowColor());
     }
 }
 
-void Laser::Update()
+void Laser::Update(float dt)
 {
-    position.y += speed;
+    position.y += speed * dt;
     if (active)
     {
         if (Utils::IsOutOfScreenUpwards(position, laserHeight))

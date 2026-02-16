@@ -5,7 +5,7 @@ PhysicObject::PhysicObject()
     
 }
 
-void PhysicObject::Update()
+void PhysicObject::Update(float dt)
 {
     
 }
